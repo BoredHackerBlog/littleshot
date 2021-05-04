@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Results</h1>
+
+<h3>taskid</h3>
+{{ taskinfo.taskid }}
+
+<h4>error: {{ taskinfo.error|default("False") }}</h4>
+
+<h3>url</h3>
+{{ taskinfo.url }}
+
+<h3>title</h3>
+{{ taskinfo.title }}
+
+<h3>screenshot</h3>
+<img src="/shots/{{ taskinfo.taskid }}.png" width=50%>
+
+<h3>content sha256</h3>
+<a href = {{ url_for('search' ,stringsearch=taskinfo.content_sha256) }}>{{ taskinfo.content_sha256 }}</a>
+
+<h3>links</h3>
+<table style="width:100%" border=1>
+    {% for link in taskinfo.links %}
+    <tr>
+    <td>{{ link }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>requests</h3>
+<table style="width:100%" border=1>
+    {% for request in taskinfo.request %}
+    <tr>
+    <td>{{ request.method }}</td>
+    <td>{{ request.url }}</td>
+    <td>{{ request.headers }}</td>
+    <td>{{ request.post_data }}</td>
+    <td>{{ request.resource_type }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>responses</h3>
+<table style="width:100%" border=1>
+    {% for response in taskinfo.response %}
+    <tr>
+    <td>{{ response.status }}</td>
+    <td>{{ response.url }}</td>
+    <td>{{ response.headers }}</td>
+    <td>{{ response.body }}</td>
+    <td><a href = {{ url_for('search' ,stringsearch=response.body_sha256) }}>{{ response.body_sha256 }}</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>cookies</h3>
+<table style="width:100%" border=1>
+{% for cookie in taskinfo.cookies %}
+<tr>
+<td>
+{{ cookie }}
+</td>
+</tr>
+{% endfor %}
+</table>
+
+<h3>downloads</h3>
+<table style="width:100%" border=1>
+    {% for download in taskinfo.download %}
+    <tr>
+    <td>{{ download.filename }}</td>
+    <td>{{ download.url }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>content</h3>
+<a href = {{ url_for('content', taskid=taskinfo.taskid) }}> Look at html content </a>
+
+{% endblock %}
