@@ -32,3 +32,4 @@ Visit http://your_docker_host_ip:8888/
 # Modifying the project
 
 # Warning
+Read through the docker-compose file comments and comments in the code. Be sure to change default passwords as well. Be careful with where/how you host this project and who has access to use it. By screenshotting other sites, you could be revealing your IP. In addition to that, there may be some injection vulns with how queries to mongodb are done. (feel free to use this app as a target for your next CTF)
