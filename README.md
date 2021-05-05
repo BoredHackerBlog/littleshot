@@ -73,4 +73,7 @@ since docker-compose is being used, you can just rebuild and deploy containers w
 Read through the docker-compose file comments and comments in the code. Be sure to change default passwords as well. Be careful with where/how you host this project and who has access to use it. By screenshotting other sites, you could be revealing your IP. In addition to that, there may be some injection vulns with how queries to mongodb are done. (feel free to use this app as a target for your next CTF)
 
 # screenshots
+Check the screenshots folder for more screenshots
 
+![Index page](/screenshots/index.png)
+![Results](/screenshots/results1.png)
