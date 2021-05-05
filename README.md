@@ -1,4 +1,4 @@
-# littleshot - Work-in-progress (at least the documentation part...)
+# littleshot
 webpage screenshot and metadata capture webapp
 
 idea for this came from urlquery.net (it no longer exists) and urlscan.io. i wanted to be ablet to screenshot pages and get some metadata surrounding the requests. i also wanted to be able to search for things in the dataset. urlscan is great and this isn't exactly replacing it. Urlscan can ID phishing pages, has great searching features, and provides threat intel. If you don't want to be limited by api, need to be able to search metadata, or just take screenshots, this project should work.
