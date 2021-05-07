@@ -3,6 +3,8 @@ from uuid import uuid4
 
 from minio import Minio
 import pymongo
+from bson.json_util import dumps
+import json
 # import pql
 
 from flask import Flask, render_template, request, url_for, redirect
@@ -127,6 +129,24 @@ def content(taskid):
         <h1>No Results found. Refreshing every 10 seconds</h1>"""
     else:
         return render_template("content.html", content=out['content'])
+
+# json results, no content
+@app.route('/json/results/<taskid>',methods=['GET'])
+def jsonresults(taskid):
+    out = gettask(taskid)
+    if out == False: # keep refreshing until the results are found
+        return "false"
+    else:
+        return json.loads(dumps(out))
+
+# json reuslts, only content
+@app.route('/json/content/<taskid>',methods=['GET'])
+def jsoncontent(taskid):
+    out = gettaskcontent(taskid)
+    if out == False:
+        return "false"
+    else:
+        return json.loads(dumps(out))
 
 # this is for searching, it can either do string search or query with EQL or NQL
 @app.route('/search',methods=['GET'])
