@@ -84,6 +84,7 @@ services:
             - minio
             - worker
             - mongoexpress
+            - tor
     #this is gonna be reverse proxy that takes the requests and passes them to app and minio
     # check ./caddy/Caddyfile and change the password
     caddy:
@@ -95,6 +96,10 @@ services:
         depends_on:
             - app
             - minio
+    #tor container, socks5 proxy will be used by worker
+    tor:
+        image: dperson/torproxy
+        
 volumes:
     #this is where the images are stored
     minio-data:

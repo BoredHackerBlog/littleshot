@@ -43,7 +43,7 @@ def screenshot(taskid, url):
     data['download'] = [] #contains downloada info
 
     with sync_playwright() as p:
-        browser = p.chromium.launch() #launch chrome
+        browser = p.chromium.launch(proxy={"server": "socks5://tor:9050"}) #launch chrome
         context = browser.new_context(ignore_https_errors=True) #new context, ignore https errors
         page = context.new_page() #new page
 
