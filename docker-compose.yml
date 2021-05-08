@@ -94,6 +94,7 @@ services:
             - ./caddy/Caddyfile:/etc/caddy/Caddyfile
         depends_on:
             - app
+            - minio
 volumes:
     #this is where the images are stored
     minio-data:
