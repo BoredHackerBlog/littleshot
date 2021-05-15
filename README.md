@@ -63,6 +63,20 @@ Visit http://your_docker_host_ip:8888/
 - Scan page - takes in a url, make sure http:// or https:// is provided
 - Search page - lets you search. string search should work fine. field equal to and not equal to search can be done as well.
 
+using with python:
+
+```
+import requests
+headers = {'Authorization': 'Basic YWRtaW46Y2hhbmdlbWU=',} #base64 of username:password
+data = {'url': 'https://www.google.com'} #url to scan
+response = requests.post('http://SERVER:8888/scan', headers=headers, data=data, verify=False)
+taskid = response.url.split('/')[-1] #returns task id
+results = requests.get(f'http://SERVER:8888/json/results/{taskid}', headers=headers, verify=False) #returns the data on results page
+print(results.json().keys())
+content = requests.get(f'http://SERVER:8888/json/content/{taskid}', headers=headers, verify=False) #returns html body that's on the content page
+print(content.json().keys())
+```
+
 # Modifying the project
 - to perform additional tasks with data collected or do additional things, edit worker.py
 - if your addition produces data then store it in mongodb, just add `data['yourfield'] = yorudata` to worker.py
