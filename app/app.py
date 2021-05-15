@@ -101,10 +101,13 @@ def index():
 def scan():
     if request.method == 'POST':
         if request.form['url']:
-            url = request.form['url']
-            taskid = str(uuid4())
-            q.enqueue('worker.screenshot',args=(taskid,url))
-            return redirect(url_for('results', taskid=taskid))
+            url = request.form['url'].strip()
+            if 'http://' in url[0:8].lower() or 'https://' in url[0:8].lower():
+                taskid = str(uuid4())
+                q.enqueue('worker.screenshot',args=(taskid,url))
+                return redirect(url_for('results', taskid=taskid))
+            else:
+                return "Error: URL must contain http:// or https://"
         else:
             return "Error: No URL found"
     else:

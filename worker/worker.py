@@ -91,9 +91,8 @@ def screenshot(taskid, url):
             data['links'] = list(set(re.findall("href=[\"\'](.*?)[\"\']", data['content']))) # extract links, may not be accurate... https://www.kite.com/python/answers/how-to-get-href-links-from-urllib-urlopen-in-python
             object_name = taskid + ".png" # file name for minio file upload
             minioclient.put_object(MINIO_BUCKET,object_name,io.BytesIO(png),length=len(png),content_type="image/png") # upload the file to minio
-        except:
-            data['error'] = True # this is cuz im lazy, i just want to know an error occurred
-
+        except Exception as e:
+            data['error'] = str(e)
 
         page.close()
         context.close()
