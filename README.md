@@ -77,6 +77,15 @@ content = requests.get(f'http://SERVER:8888/json/content/{taskid}', headers=head
 print(content.json().keys())
 ```
 
+To run multiple workers, edit the docker-compose and add replicas like shown below:
+
+```
+    worker:
+        build: ./worker
+        deploy:
+          replicas: 2 # number of workers
+```
+
 # Modifying the project
 - to perform additional tasks with data collected or do additional things, edit worker.py
 - if your addition produces data then store it in mongodb, just add `data['yourfield'] = yorudata` to worker.py
