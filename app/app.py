@@ -52,7 +52,7 @@ def gettaskcontent(taskid): #get task results but only content
 
 
 def getrecent(): #get 10 recent tasks but only get url and task id
-    out = mycol.find({},{"url":1,"taskid":1}).sort("_id", pymongo.DESCENDING).limit(10)
+    out = mycol.find({"private": { "$ne": True }},{"url":1,"taskid":1}).sort("_id", pymongo.DESCENDING).limit(10)
     if out != None:
         return list(out)
     else:
@@ -60,7 +60,7 @@ def getrecent(): #get 10 recent tasks but only get url and task id
 
 
 def getstringsearch(stringsearch): #do a string search and return 25 recent results
-    query = { "$text": { "$search": f"{stringsearch}" } }
+    query = { "$text": { "$search": f"{stringsearch}" }, "private": { "$ne": True } }
     out = mycol.find(query,{"url":1,"taskid":1}).sort("_id", pymongo.DESCENDING).limit(25)
     if out != None:
         return list(out)
@@ -72,11 +72,11 @@ def getquerysearch(querystring): #do query for a specific field for equal to or 
     if " EQL " in querystring:
         field = querystring.split(" EQL ")[0]
         value = querystring.split(" EQL ")[1]
-        query = { field: { "$regex": f"{value}", "$options": 'i'} }
+        query = { field: { "$regex": f"{value}", "$options": 'i'}, "private": { "$ne": True } }
     elif " NQL " in querystring:
         field = querystring.split(" NQL ")[0]
         value = querystring.split(" NQL ")[1]
-        query = { field: { "$not": { "$regex": f"{value}", "$options": 'i'} } }
+        query = { field: { "$not": { "$regex": f"{value}", "$options": 'i'} }, "private": { "$ne": True } }
     else:
         return False
     print(query)
@@ -104,7 +104,10 @@ def scan():
             url = request.form['url'].strip()
             if 'http://' in url[0:8].lower() or 'https://' in url[0:8].lower():
                 taskid = str(uuid4())
-                q.enqueue('worker.screenshot',args=(taskid,url))
+                if request.form.get('private'):
+                    q.enqueue('worker.screenshot',args=(taskid,url,True))
+                else:
+                    q.enqueue('worker.screenshot',args=(taskid,url,False))
                 return redirect(url_for('results', taskid=taskid))
             else:
                 return "Error: URL must contain http:// or https://"
