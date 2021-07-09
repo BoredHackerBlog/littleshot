@@ -21,6 +21,7 @@ check more branches here: https://github.com/BoredHackerBlog/littleshot/branches
 - RQ Dashboard - https://github.com/Parallels/rq-dashboard
 - Minio - https://min.io/
 - Caddy - https://caddyserver.com/
+- Yara - https://virustotal.github.io/yara/
 
 # Design
 - Caddy works as a reverse proxy for app and minio
