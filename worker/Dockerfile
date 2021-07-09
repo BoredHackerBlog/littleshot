@@ -34,12 +34,17 @@ RUN pip install --upgrade pip && \
     python3.7 -m pip install playwright --no-cache-dir && \
     python3.7 -m playwright install
 
+RUN apt-get install -y python3.7-dev
+
 RUN python3.7 -m pip install rq --no-cache-dir
 RUN python3.7 -m pip install pymongo --no-cache-dir
 RUN python3.7 -m pip install minio --no-cache-dir
+RUN python3.7 -m pip install yara-python --no-cache-dir
 
 RUN rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /app
 COPY worker.py /app/worker.py
+RUN mkdir /app/yara
+COPY yara/* /app/yara/
 WORKDIR /app

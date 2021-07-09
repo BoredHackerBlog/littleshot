@@ -22,6 +22,7 @@ check more branches here: https://github.com/BoredHackerBlog/littleshot/branches
 - Minio - https://min.io/
 - Caddy - https://caddyserver.com/
 - Tor - https://www.torproject.org/
+- Yara - https://virustotal.github.io/yara/
 
 # Design
 - Caddy works as a reverse proxy for app and minio
