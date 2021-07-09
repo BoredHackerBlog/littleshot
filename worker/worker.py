@@ -9,6 +9,9 @@ from minio import Minio
 import io
 import pymongo
 
+import yara
+rules = yara.compile('./yara/rules.yar')
+
 MINIO_SERVER = os.environ['MINIO_SERVER']
 MINIO_ACCESS_KEY = os.environ['MINIO_ACCESS_KEY']
 MINIO_SECRET_KEY = os.environ['MINIO_SECRET_KEY']
@@ -90,6 +93,7 @@ def screenshot(taskid, url, private):
             data['content'] = page.content() # gets page content/html
             data['content_sha256'] = hashlib.sha256(str.encode(data['content'])).hexdigest() # hash the content/html
             data['links'] = list(set(re.findall("href=[\"\'](.*?)[\"\']", data['content']))) # extract links, may not be accurate... https://www.kite.com/python/answers/how-to-get-href-links-from-urllib-urlopen-in-python
+            data['yara_matches'] = str(rules.match(data=data['content']))
             object_name = taskid + ".png" # file name for minio file upload
             minioclient.put_object(MINIO_BUCKET,object_name,io.BytesIO(png),length=len(png),content_type="image/png") # upload the file to minio
         except Exception as e:
